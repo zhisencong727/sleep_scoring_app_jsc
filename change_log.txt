@@ -1,0 +1,55 @@
+#### v0.10.1
+1. Fixed slice indexing error that may occur when exporting sleep bout spreadsheets and when only one sleep stage is predicted for the entire recording.
+2. Enabled sleep bout spreadsheet exporting for manual sleep scoring.
+3. Separated the app program from run_app.exe so that future updates and patches can be uploaded directly without repackaging with pyinstaller.
+
+#### v0.10.0
+1. Added postprocessing to the prediction of the sDREAMER model. The postprocessing aims to correct any wrong transitions involving REM. In addition, it also eliminates SWS or REM that are too short and short Wake that does not have high EMG magnitude.
+2. Added visualization right after it generates sleep score predictions for a file. In that visualization, you can interact with, annotate, and save the results.
+3. Added sleep score spreadsheet as an output when saving the annotations.  It includes two sheets. The first shows the start, end, and duration of all sleep bouts in the order of their occurrence. The second sheet shows the stats of the sleep score distribution, transition counts, and so on. 
+4. Made the change that when all EEG, EMG, and NE are present in the .mat file, they will be clipped to the shortest duration of the three.
+5. Fixed the error that showed up when annotating beyond the recording.
+6. Fixed the error that the sleep scores disappear when changing sampling level amid annotation.
+7. Fixed the error that showed up when saving the annotation while leaving some sections of recording unscored.
+8. Added second-level boundaries to EEG, EMG, and NE signals. 
+9. Removed msda model.
+
+#### v0.9.0-beta
+1. Updated sDREAMER model with better performance. See: https://docs.google.com/document/d/1pj3fm7cJ2eW6XDKuYYW0IRGrYlmgvDCexqE3yngLl4c/edit?usp=sharing
+
+
+#### v0.8.0
+1. fixed signal alignment with time axis by dividing number of data point by the true frequency, instead of the rounded frequency, eg., 512; rename some variables to for better readability; when no confidence exists, initialize with lists of False.
+2. Removed the file name component in the app. Instead, show the file name as the title of the figure. 
+3. Modify the app so that it's compatible with the modified sleep data preprocessing pipeline. mods include all signals from .mat files are flat, and ne is already downsampled by a factor of 100; 
+4. Removed messages about reshaping in app in visualization.
+5. Adjusted the color code for the sleep scores so that they look exactly like the color code used in the Viewpoint app. This aims to bring a sense of familiarity to the users.
+
+
+#### v0.7.2
+1. Added visualization for not scored or manually scored sleep data. With this this version, you can visualize .mat files without sleep scores (called "pred_labels") or confidence. If no sleep scores are given, initialize sleep scores with all "Wake". If no confidence is given, initialize it with all 0s.
+
+#### v0.7.0
+1. Got rid of the annotation box once an annotation is made. This allows the user to quickly draw smaller annotation boxes within the previous box and make annotations.
+2. Kept only time and confidence in hover info box and make it 50% see-through. This reduces view blocking.
+3. Removed the Autoscale button since it did the same thing as Reset Axes.
+4. Added a prompt on exiting the app, which serves as a reminder to the user to save results. 
+5. Added a resampling (to 512 Hz) step before feeding the EEG and EMG data to the model. The app can now handle data sampled at higher frequencies such as 610 Hz.
+6. Downsampled NE to 10 Hz in visualization.
+7. Added tiny gaps in the confidence heatmap, which serve as xticks.
+8. Added several optimizations, such as converting serverside callbacks to clientside callbacks whenever possible, using partial property updates for callbacks on annotations. These make the app more responsive. 
+
+#### v0.6.0
+1. Added Shadi's 3-class model for sleep scoring data without NE signal.
+2. Bumped up initial smapling level to at most 4,000 points, which can be further increased to 16,000 points by selecting "x4" in Sampling Level.
+3. Corrected 1-second level annotation such that any annotation within a whole second, e.g., second 0-1, second 1-2, will update the sleep score for that whole second. If an annotation spans over two consecutive seconds, whichever whole second contains more annotation box will be updated. For example, the user selects an annotation box from 1.72 to 2.45 second and wants to update it to REM. Since most of the annotation box falls into the whole second 2-3, the whole second 2-3 will be updated to REM.
+4. Changed keypress for annotation from 0, 1, 2, 3 to 1, 2, 3, 4, which is more convenient and intuitive.
+5. Added panning by left or right arrow on keyboard. This enables the user to move left or right while in annotation mode.
+6. Changed the color for MA to yellow.
+
+
+#### v0.5.4
+1. Added support for annotation for Micro-Arousal (MA).
+2. Make the time axis always show the raw time in seconds, instead of using K for larger number. For example, always show 16455, instead of showing 16.455K.
+3. Added a message telling the user what prediction file is being visualized now, in case the user lost track during annotation. The message will always above the graph when visualizing a prediction file.
+4. Fixed an incorrect Undo Annotation behavior where, when an annotation does not change the current prediction, it would still be considered an annotation, and thus consuming the undo history. Now is an annotation does not change the prediction, it will not be counted in the undo history.
