@@ -156,9 +156,11 @@ class Model(nn.Module):
         eeg, eeg_attn = self.eeg_transformer(eeg)
         emg, emg_attn = self.emg_transformer(emg)
         ne, ne_attn = self.ne_transformer(ne)
-
+        #print("nes.shape in model:",ne.shape)
+        #print("eeg.shape in model:",eeg.shape)
         cls_eeg, cls_emg, cls_ne = eeg[:, :, -1], emg[:, :, -1], ne[:, :, -1]
-
+        #print("cls_eeg:",cls_eeg.shape)
+        #print("cls_emg:",cls_emg.shape)
         # x_our --> [b, n, 2d]
         emb = torch.cat([cls_eeg, cls_emg, cls_ne], dim=-1)
         emb = self.proj(emb)

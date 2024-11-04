@@ -23,16 +23,24 @@ def f1_score_evaluation(groundtruth,predicted):
 
 
 def get_confusionMatrix(groundtruth,predicted,confusionMatrix):
+
+    individualConfusionMatrix = [[0,0,0],[0,0,0],[0,0,0]]
     
     gt_score = groundtruth['sleep_scores'].flatten()
     pred_score = predicted['pred_labels'].flatten()
 
-    gt_score = gt_score[0:len(pred_score)]
+    if len(gt_score) < len(pred_score):
+        pred_score = pred_score[0:len(gt_score)]
+    else:
+        gt_score = gt_score[0:len(pred_score)]
 
     
     for i in range(len(gt_score)):
         confusionMatrix[int(gt_score[i])][int(pred_score[i])] += 1
-    
+        individualConfusionMatrix[int(gt_score[i])][int(pred_score[i])] += 1
+    print("individualConfusionMatrix:")
+    for row in individualConfusionMatrix:
+        print(row)
 
 
 

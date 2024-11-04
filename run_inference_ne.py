@@ -181,7 +181,7 @@ def build_args(**kwargs):
     return args
 
 # %%
-def infer(data, model_path, batch_size=32):
+def infer(data, model_path, batch_size=64):
     args = build_args()
     device = "cuda" if torch.cuda.is_available() else "cpu"
     model = n2nBaseLineNE.Model(args)
@@ -210,6 +210,8 @@ def infer(data, model_path, batch_size=32):
             for batch, (traces,nes) in enumerate(data_loader, 1):
                 traces = traces.to(device)  # [batch_size, 64, 2, 1, 512]
                 nes = nes.to(device)
+                #print("nes.shape",nes.shape)
+                #nes = torch.zeros(nes.shape[0],64,1,10)
                 out_dict = model(traces, nes, label=None)
                 out = out_dict["out"]
 

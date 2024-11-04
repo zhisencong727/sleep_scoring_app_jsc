@@ -57,7 +57,7 @@ if __name__ == "__main__":
 
     confusionMatrix = [[0,0,0],[0,0,0],[0,0,0]]
 
-    for each in goldStandardFileList:
+    for each in testingFileList:
         mat_file = os.path.join(data_path, each)
         mat = loadmat(mat_file)
         mat, output_path = run_inference(mat, model_choice, postprocess=False)
@@ -70,9 +70,11 @@ if __name__ == "__main__":
         print(each)
         dict[each] = f1_score_evaluation(loadmat(mat_file),mat)
         
-        for row in confusionMatrix:
-            print(row)
+        
     
     for each in dict.keys():
         print(each,end=":")
         print(dict[each])
+    
+    for row in confusionMatrix:
+        print(row)
