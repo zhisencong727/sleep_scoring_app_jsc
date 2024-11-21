@@ -1,0 +1,33 @@
+COM5_bin1_gs.mat: 0.41
+
+115_gs.mat: 0.93
+
+788_bin1_gs.mat: 0.526
+                                                                                                            
+arch_387.mat: Overall IoU for label 2: 0.75
+                                                                                                               
+arch_412.mat: Overall IoU for label 2: 0.566
+                                                                                                               
+arch_420.mat: Overall IoU for label 2: 0.731
+                                                                                                               
+arch_484_yfp.mat: Overall IoU for label 2: 0.633
+                                                                                                                
+arch_486.mat: Overall IoU for label 2: 0.882
+                                                                                                                
+aud_399.mat: Overall IoU for label 2: 0.528
+                                                                                                                 
+chr2_584_yfp.mat: Overall IoU for label 2: 0.765
+                                                                                                                 
+chr2_588_freq.mat: Overall IoU for label 2: 0.935
+                                                                                                                
+nor_387_arch.mat: Overall IoU for label 2: 0.585
+                                                                                                                  
+nor_408_yfp.mat: Overall IoU for label 2: 0.697
+                                                                                                             
+nor_486_arch.mat: Overall IoU for label 2: 0.915
+                                                                                                               
+sal_588.mat: Overall IoU for label 2: 0.848
+                                                                                                                 
+sal_592.mat: Overall IoU for label 2: 0.646
+                                                                                                            
+sal_602.mat: Overall IoU for label 2: 0.808

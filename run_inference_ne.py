@@ -13,7 +13,7 @@ from torch.utils.data import Dataset, DataLoader
 from tqdm import tqdm
 import numpy as np
 
-from app_src.models.sdreamer import n2nBaseLineNE
+from app_src.models.sdreamer import n2nBaseLineNE,n2nSeqNewMoE2
 from app_src.preprocessing_ne import reshape_sleep_data_ne
 
 
@@ -212,7 +212,7 @@ def infer(data, model_path, batch_size=64):
                 nes = nes.to(device)
                 #print("nes.shape",nes.shape)
                 #nes = torch.zeros(nes.shape[0],64,1,10)
-                out_dict = model(traces, nes, label=None)
+                out_dict = model(traces,nes,label=None)
                 out = out_dict["out"]
 
                 prob = torch.max(torch.softmax(out, dim=1), dim=1).values
@@ -244,7 +244,6 @@ def infer(data, model_path, batch_size=64):
 
     return all_pred, all_prob
 
-
 if __name__ == "__main__":
     from scipy.io import loadmat
 
@@ -252,3 +251,4 @@ if __name__ == "__main__":
     mat_file = "../user_test_files/sal_588.mat"
     data = loadmat(mat_file)
     all_pred, all_prob = infer(data, model_path)
+

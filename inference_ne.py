@@ -12,6 +12,7 @@ import run_inference_ne as run_inference_ne
 from app_src.postprocessing import postprocess_pred_labels
 from app_src.modelEvaluation import f1_score_evaluation
 from app_src.modelEvaluation import get_confusionMatrix
+from app_src.modelEvaluation import scoreCalculationFromCM,find_periods,compute_iou,overall_iou
 
 
 MODEL_PATH = "app_src/models/sdreamer/ne_model_result/"
@@ -26,6 +27,7 @@ def run_inference(
     mat["confidence"] = confidence
     # mat["num_class"] = 3
     if postprocess:
+        print("POST!")
         predictions = postprocess_pred_labels(mat)
         mat["pred_labels"] = predictions
 
@@ -49,9 +51,9 @@ if __name__ == "__main__":
     model_choice = "sdreamer"
     data_path = "/Users/jsc727/Documents/sdreamer_train_jsc/groundtruth_data"
 
-    trainingFileList = getListFromFile("/Users/jsc727/Documents/sleep_scoring_app_jsc/app_src/trainingFileList.txt")
-    testingFileList = getListFromFile("/Users/jsc727/Documents/sleep_scoring_app_jsc/app_src/testingFileList.txt")
-    goldStandardFileList = getListFromFile("/Users/jsc727/Documents/sleep_scoring_app_jsc/app_src/goldStandardFileList.txt")
+    trainingFileList = getListFromFile("/Users/jsc727/Documents/sleep_scoring_app_jsc_Github/app_src/trainingFileList.txt")
+    testingFileList = getListFromFile("/Users/jsc727/Documents/sleep_scoring_app_jsc_Github/app_src/testingFileList.txt")
+    goldStandardFileList = getListFromFile("/Users/jsc727/Documents/sleep_scoring_app_jsc_Github/app_src/goldStandardFileList.txt")
 
     dict = {}
 
@@ -62,12 +64,20 @@ if __name__ == "__main__":
         mat = loadmat(mat_file)
         mat, output_path = run_inference(mat, model_choice, postprocess=False)
 
+        gt = mat['sleep_scores'].flatten()
+        pred = mat['pred_labels'].flatten()
+     
+        gt_rem_period = find_periods(gt,2)
+        print("Here is the IoU List:")
+        iou_list = compute_iou(gt,pred,gt_rem_period,2)
+       
+        print(each,end=": ")
+        overall_iou(gt,pred,2)
+
+        individual_cm = get_confusionMatrix(loadmat(mat_file),mat,confusionMatrix)
+        scoreCalculationFromCM(individual_cm)
+
         
-
-        #print(each)
-        get_confusionMatrix(loadmat(mat_file),mat,confusionMatrix)
-
-        print(each)
         dict[each] = f1_score_evaluation(loadmat(mat_file),mat)
         
         
@@ -78,3 +88,5 @@ if __name__ == "__main__":
     
     for row in confusionMatrix:
         print(row)
+    
+    scoreCalculationFromCM(confusionMatrix)

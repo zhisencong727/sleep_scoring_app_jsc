@@ -448,14 +448,14 @@ class MoELoader(nn.Module):
             else nn.Identity()
         )
 
-        self.patch_ecncoder = patch_mapper[domain] if cls else nn.Identity()
+        self.patch_encoder = patch_mapper[domain] if cls else nn.Identity()
 
     @torch.jit.ignore
     def no_weight_decay(self):
         return {"get_pos", "get_cls"}
 
     def forward(self, x):
-        x = self.patch_ecncoder(x)
+        x = self.patch_encoder(x)
 
         x = self.get_cls(x)
         x = self.get_pos(x)

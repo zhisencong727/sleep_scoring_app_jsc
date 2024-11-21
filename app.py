@@ -314,7 +314,7 @@ def generate_prediction(ready, model_choice):
     filename = cache.get("filename")
     mat = cache.get("mat")
     temp_mat_path = os.path.join(TEMP_PATH, filename)
-    mat, output_path = run_inference(mat, model_choice, output_path=temp_mat_path)
+    mat, output_path = run_inference(mat, model_choice, output_path=temp_mat_path,postprocess=False)
     set_cache(cache, os.path.basename(output_path), mat)
 
     return (

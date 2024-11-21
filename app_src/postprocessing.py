@@ -92,7 +92,7 @@ def evaluate_Wake(
 
 def modify_Wake(df, emg, emg_frequency):
     """change short Wake (<= 5s) if needed"""
-    df_short_Wake = df[(df["pred_labels"] == 0) & (df["duration"] <= 2)]
+    df_short_Wake = df[(df["pred_labels"] == 0) & (df["duration"] < 2)]
     for row in df_short_Wake.itertuples():
         index, start, end = row[0], row[2], row[3]
         prev_start, prev_end = df.loc[index - 1]["start"], df.loc[index - 1]["end"]
